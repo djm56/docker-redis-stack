@@ -1,4 +1,4 @@
-version: '3.2'
+#version: '3.2'
 
 services:
   redis:
@@ -11,6 +11,12 @@ services:
       - ./data:/data
       - ./config/redis-stack.conf:/redis-stack.conf
     command: redis-server /redis-stack.conf
+
+  #redis-cli:
+    #image: "redis:latest"
+    #depends_on:
+    #  - redis
+    #command: redis-cli -h redis
 
 volumes:
   redis-data:
