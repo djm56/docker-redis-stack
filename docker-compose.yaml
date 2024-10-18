@@ -1,4 +1,4 @@
-version: '3.2'
+#version: '3.2'
 
 services:
   redis:
@@ -9,18 +9,18 @@ services:
       - "8001:8001"
     volumes:
       - ./data:/data
-      - ./config:/usr/local/etc/redis
-    command: redis-server /usr/local/etc/redis/redis-stack.conf
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - ./config/redis-stack.conf:/redis-stack.conf
+      - ./config/redis-acl.conf:/redis-acl.conf
+    #command production  
+    #command: redis-server /redis-stack.conf --aclfile /redis-acl.conf
+    #command development
+    command: redis-server /redis-stack.conf
 
-  redis-cli:
-    image: "redis:latest"
-    depends_on:
-      - redis
-    environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-    command: ["sh", "-c", "while true; do redis-cli -h redis; sleep 5; done"]
+  #redis-cli:
+    #image: "redis:latest"
+    #depends_on:
+    #  - redis
+    #command: redis-cli -h redis
 
 volumes:
   redis-data:
