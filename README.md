@@ -13,6 +13,9 @@ Maps the Redis port (6379) and RedisInsight port (8001) to the host
 - docker compose down
 - docker compose up -d
 
+## Set Redis Password
+export REDIS_PASSWORD=your_secure_password
+
 ## Redis Cli
 We have added redis-cli as part of the install but it has been compented out, either install redis-tools on server or you can install it via composer, if installed via composer please use  
 
