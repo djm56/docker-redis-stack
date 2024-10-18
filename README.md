@@ -20,8 +20,21 @@ We have added redis-cli as part of the install but it has been compented out, ei
 docker compose run --rm redis-cli
 ```
 
+Or with ACL
+```
+redis-cli redis-cli -h redis -a adminpassword
+redis-cli redis-cli -h redis -a restrictedpassword
+```
+
 ## To Connect using passowrd
 Please change the password in the conf file this is best practice   
+On Development
 ```
-redis-cli -h 127.0.0.1 -p 6379 -a 'your_strong_password' 
+redis-cli -h 127.0.0.1 -p 6379 -a 'your_strong_password'
+```
+
+Or with ACL on production
+```
+docker compose exec redis-cli redis-cli -h redis -a adminpassword
+docker compose exec redis-cli redis-cli -h redis -a restrictedpassword
 ```

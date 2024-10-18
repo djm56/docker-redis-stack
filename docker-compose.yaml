@@ -9,8 +9,8 @@ services:
       - "8001:8001"
     volumes:
       - ./data:/data
-      - ./config/redis-stack.conf:/redis-stack.conf
-    command: redis-server /redis-stack.conf
+      - ./config:/usr/local/etc/redis
+    command: redis-server /usr/local/etc/redis/redis-stack.conf
 
   #redis-cli:
     #image: "redis:latest"
