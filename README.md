@@ -3,6 +3,8 @@ Full Redis Stack Using Docker Compose
 
 Update the redis-stack.conf file esepcially look at creting a very strong passowrd.
 
+Maps the Redis port (6379) and RedisInsight port (8001) to the host  
+
 ## To Start
 - docker compose up -d
 
