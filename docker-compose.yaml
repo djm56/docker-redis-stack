@@ -20,7 +20,7 @@ services:
       - redis
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
-    command: sh -c 'redis-cli -h redis -a $$REDIS_PASSWORD'
+    command: ["sh", "-c", "while true; do redis-cli -h redis; sleep 5; done"]
 
 volumes:
   redis-data:
