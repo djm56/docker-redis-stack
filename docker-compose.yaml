@@ -1,5 +1,3 @@
-#version: '3.2'
-
 services:
   redis:
     image: "redis/redis-stack:latest"
@@ -7,6 +5,8 @@ services:
     ports:
       - "6379:6379"
       - "8001:8001"
+    networks:
+      - redis-net
     volumes:
       - ./data:/data
       - ./config/redis-stack.conf:/redis-stack.conf
@@ -21,3 +21,7 @@ services:
 volumes:
   redis-data:
   redis-conf:
+
+networks:
+  redis-net:
+  driver: bridge
