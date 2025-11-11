@@ -61,11 +61,50 @@ You should also disable dangerous commands in production by uncommenting some of
 #rename-command PSYNC ""
 ```
 
-## Redis Cli
-We have added redis-cli as part of the install but it has been compented out, either install redis-tools on server or you can install it via docker composer, if installed via composer please use  
+## Redis CLI Usage
 
+### Option 1: Use Redis CLI from the running container
+Connect to the Redis CLI using the running Redis container:
+```bash
+docker exec -it redis redis-cli
 ```
-docker compose run --rm redis-cli
 
+### Option 2: Use Redis CLI with authentication
+If you have authentication enabled, connect with credentials:
+```bash
+# For basic password authentication
+docker exec -it redis redis-cli -a your_password
+
+# For ACL authentication
+docker exec -it redis redis-cli --user admin --pass your_admin_password
+```
+
+### Option 3: Install Redis CLI separately
+You can also install redis-tools on your host system:
+```bash
+# Ubuntu/Debian
+sudo apt-get install redis-tools
+
+# macOS with Homebrew
+brew install redis
+
+# Then connect from host
 redis-cli -h 127.0.0.1 -p 6379
+```
+
+### Basic Redis CLI Commands
+Once connected, try these basic commands:
+```bash
+# Test connection
+PING
+
+# Set and get a key
+SET mykey "Hello Redis"
+GET mykey
+
+# List all keys (use carefully in production)
+KEYS *
+
+# Get server info
+INFO server
 ```
