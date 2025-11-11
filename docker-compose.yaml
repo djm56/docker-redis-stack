@@ -1,27 +1,28 @@
 services:
   redis:
-    image: "redis/redis-stack:latest"
-    container_name: "redis-stack"
+    image: redis:latest
+    container_name: "redis"
     ports:
       - "6379:6379"
-      - "8001:8001"
     networks:
       - redis-net
     volumes:
-      - ./data:/data
-      - ./config/redis-stack.conf:/redis-stack.conf
-      - ./config/redis-acl.conf:/redis-acl.conf
-    command: redis-server /redis-stack.conf
-
-  #redis-cli:
-    #image: "redis:latest"
-    #depends_on:
-    #  - redis
+      - redis-data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./config/redis-acl.conf:/usr/local/etc/redis/redis-acl.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   redis-data:
-  redis-conf:
+    driver: local
 
 networks:
   redis-net:
-  driver: bridge
+    driver: bridge

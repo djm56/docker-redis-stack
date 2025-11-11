@@ -1,9 +1,9 @@
-# docker-redis-stack
-Full Redis Stack Using Docker Compose
+# docker-redis-8
+Redis 8 Using Docker Compose
 
-Update the redis-stack.conf file esepcially look at creting a very strong passowrd.
+Update the redis.conf file especially look at creating a very strong password.
 
-Maps the Redis port (6379) and RedisInsight port (8001) to the host  
+Maps the Redis port (6379) to the host  
 
 ## To Start
 - docker compose up -d
@@ -14,25 +14,34 @@ Maps the Redis port (6379) and RedisInsight port (8001) to the host
 - docker compose up -d
 
 ## Set Up Security
-There are 2 options for setting up redis security using a global password or setting up an acl file that has the default user, admin and restricted user  
-Open the redis-stack.conf file and find these lines:  
+There are 2 options for setting up Redis security using a global password or setting up an ACL file with multiple users.
+
+Open the redis.conf file and find these lines:  
 ```
 # Security
-# requirepass set-complex-passwword
-protected-mode no
-aclfile /redis-acl.conf
+# requirepass YOUR_SECURE_PASSWORD_HERE_32_CHARS_MIN
+protected-mode yes
+aclfile /usr/local/etc/redis/redis-acl.conf
 ```
 
-To set up basic security comment out aaclfile line and un comment requirepassword. Please use a very complex password I normally use 16-32 alpha numeric passwords  
-
-If you want to use ACL edit the redis.acl.conf file by changing the passwords after the > in each line  
+### Option 1: Basic Password Authentication
+Comment out the `aclfile` line and uncomment `requirepass`. Use a very complex password (32+ characters recommended):
 ```
-user default on +@all ~* >defaultpassword
-user admin on +@all ~* &* >adminpassword123
-user restricted on +@all -@dangerous ~* &* >restrictedpassword456
+requirepass your_very_secure_password_here_at_least_32_characters
+# aclfile /usr/local/etc/redis/redis-acl.conf
 ```
 
-You should also disable commands in production by uncommenting out some of these lines in redis-stack.conf    
+### Option 2: ACL-based Authentication (Recommended)
+Edit the redis-acl.conf file and change all the placeholder passwords:
+```
+user default off
+user admin on +@all ~* &* >CHANGE_THIS_ADMIN_PASSWORD_32_CHARS_MIN
+user app on +@read +@write +@list +@set +@hash +@stream +@geo +@hyperloglog +@bitmap -@dangerous ~* >CHANGE_THIS_APP_PASSWORD_32_CHARS_MIN
+user readonly on +@read ~* >CHANGE_THIS_READONLY_PASSWORD_32_CHARS_MIN
+```
+
+### Production Security Hardening
+You should also disable dangerous commands in production by uncommenting some of these lines in redis.conf    
 ```
 # Disable dangerous commands
 #rename-command FLUSHALL ""
